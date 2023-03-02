@@ -66,7 +66,7 @@ class App extends Component {
           <Switch>
             <Route path='/' exact={true} component={Home}/>
             <Route path='/getPatients/' exact={true} component={PatientList}/>
-            <Route path='/api/patients/updatePatient/:id' component={PatientEdit}/>
+            <Route path='/patients/:id' component={PatientEdit}/>
           </Switch>
         </Router>
     )

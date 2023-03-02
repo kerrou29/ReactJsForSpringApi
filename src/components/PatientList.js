@@ -4,6 +4,7 @@ import AppNavbar from './AppNavbar';
 import { Link } from 'react-router-dom';
 
 
+
 class PatientList extends Component {
 
     constructor(props) {
@@ -30,9 +31,13 @@ class PatientList extends Component {
             this.setState({patients: updatedPatients});
         });
     }
+
+    
+
     
     render() {
 
+    
         const {patients, isLoading} = this.state;
     
         if (isLoading) {
@@ -47,7 +52,7 @@ class PatientList extends Component {
                 <td>{patient.age}</td>
                 <td>
                     <ButtonGroup>
-                        <Button size="sm" color="primary" tag={Link} to={"/api/patients/updatePatient/" + patient.id}>Edit</Button>
+                        <Button size="sm" color="primary" tag={Link} to={"/patients/" + patient.id}>Edit</Button>
                         <Button size="sm" color="danger" onClick={() => this.remove(patient.id)}>Delete</Button>
                     </ButtonGroup>
                 </td>
@@ -59,7 +64,7 @@ class PatientList extends Component {
                 <AppNavbar/>
                 <Container fluid>
                     <div className="float-right">
-                        <Button color="success" tag={Link} to="/getPatients/addPatient" >Add Patient</Button>
+                        <Button color="success" tag={Link} to={"/patients/new"} >Add Patient</Button>
                     </div>
                     <h3>Patients</h3>
                     <Table className="mt-4">

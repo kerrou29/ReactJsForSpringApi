@@ -8,6 +8,7 @@ class PatientEdit extends Component {
     emptyItem = {
         name: '',
         email: '',
+        dob:''
 
     };
 
@@ -20,8 +21,8 @@ class PatientEdit extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     async componentDidMount() {
-        if (this.props.match.params.id !== 'addPatient') {
-            const patient = await (await fetch(`/api/patients/updatePatient/${this.props.match.params.id}`)).json();
+        if (this.props.match.params.id !== 'new') {
+            const patient = await (await fetch(`/api/patients/getPatient/${this.props.match.params.id}`)).json();
             this.setState({item: patient});
         }  
     }
@@ -39,7 +40,7 @@ class PatientEdit extends Component {
         event.preventDefault();
         const {item} = this.state;
     
-        await fetch('/api/patients/updatePatient/' + (item.id ? '/' + item.id : ''), {
+        await fetch('/api/patients' + (item.id ? '/' + item.id : ''), {
             method: (item.id) ? 'PUT' : 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -69,7 +70,12 @@ class PatientEdit extends Component {
                                onChange={this.handleChange} autoComplete="email"/>
                     </FormGroup>
                     <FormGroup>
-                        <Button color="primary" type="submit">Save</Button>{' '}
+                        <Label for="dob">Dob</Label>
+                        <Input type="date" name="dob" id="dob" value={item.dob || ''}
+                               onChange={this.handleChange} autoComplete="dob"/>
+                    </FormGroup>
+                    <FormGroup>
+                        <Button color="primary" type="submit">Save</Button>
                         <Button color="secondary" tag={Link} to="/api/patients/getPatients/">Cancel</Button>
                     </FormGroup>
                 </Form>
