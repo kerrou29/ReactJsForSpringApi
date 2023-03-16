@@ -1,77 +1,41 @@
-// import { Component } from "react";
-// import logo from './logo.svg';
-// import './App.css';
 
-// class App extends Component {
-//   state = {
-//     patients: []
-//   };
-
-//   async componentDidMount() {
-//     const response = await fetch('/api/patients/getPatients');
-//     const body = await response.json();
-//     this.setState({patients: body});
-//   }
-
-//   render() {
-//     const {patients} = this.state;
-//     return (
-//         <div className="App">
-         
-//             <div className="App-intro">
-//               <h1 className="text-center">Patients</h1>
-//               <table className = "table table-striped">
-//                 <thead>
-//                   <tr>
-//                     <td>Patient Id</td>
-//                     <td>Patient Name</td>
-//                     <td>Patient Email</td>
-//                     <td>Patient Dob</td>
-//                     <td>Patient Age</td>
-
-//                   </tr>
-//                 </thead>
-//                 <tbody>
-//                   {patients.map(
-//                     patient =>
-//                     <tr key={patient.id}>
-//                       <td>{patient.id}</td>
-//                       <td>{patient.name}</td>
-//                       <td>{patient.email}</td>
-//                       <td>{patient.dob} </td>
-//                       <td>{patient.age}</td>
-//                     </tr>
-//                 )}
-//                 </tbody>
-//               </table>
-              
-//             </div>
-//         </div>
-//     );
-//   }
-// }
-// export default App;
-
-import React, { Component } from 'react';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './AppNavbar';
 import Home from './Home';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Profile from './Profile';
+import Register from './Register';
+import Login from './Login';
+import AuthService from '../services/AuthService';
 import PatientList from './PatientList';
 import PatientEdit from "./PatientEdit";
 
-class App extends Component {
-  render() {
-    return (
-        <Router>
-          <Switch>
-            <Route path='/' exact={true} component={Home}/>
-            <Route path='/getPatients/' exact={true} component={PatientList}/>
-            <Route path='/patients/:id' component={PatientEdit}/>
-          </Switch>
-        </Router>
-    )
-  }
+function App() {
+const [user, setUser] = useState(AuthService.getCurrentUser());
+
+return (
+<Router>
+<div className="App">
+<Navbar user={user} setUser={setUser} />
+<div className="container mt-3">
+      <Routes>
+        <Route exact path="/" element={Home} />
+        <Route exact path="/getPatients" element={PatientList}></Route>
+        <Route path='/api/patients/updatePatient/:id' element={PatientEdit}/>
+        <Route path="/profile" element={Profile} />
+        <Route
+          path="/register"
+          render={() => <Register setUser={setUser} />}
+        />
+        <Route
+          path="/login"
+          render={() => <Login setUser={setUser} />}
+        />
+      </Routes>
+    </div>
+  </div>
+</Router>
+);
 }
 
 export default App;
-

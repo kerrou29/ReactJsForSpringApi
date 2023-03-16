@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link} from 'react-router-dom';
+import { withRouter } from './withRouter';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 
@@ -75,8 +76,8 @@ class PatientEdit extends Component {
                                onChange={this.handleChange} autoComplete="dob"/>
                     </FormGroup>
                     <FormGroup>
-                        <Button color="primary" type="submit">Save</Button>
-                        <Button color="secondary" tag={Link} to="/api/patients/getPatients/">Cancel</Button>
+                        <Button color="primary" type="submit">Save</Button>{' '}
+                        <Button color="secondary" tag={Link} to="/getPatients/">Cancel</Button>
                     </FormGroup>
                 </Form>
             </Container>
