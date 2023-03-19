@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
@@ -13,19 +12,16 @@ const register = (firstName, lastName, email, password) => {
   });
 };
 
- const login = (username, password) => {
-  return axios
+const login = async (email, password) => {
+  const response = await axios
     .post(API_URL + "authenticate", {
-      username,
+      email,
       password,
-    })
-    .then((response) => {
-      if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
-
-      return response.data;
     });
+  if (response.data.accessToken) {
+    localStorage.setItem("user", JSON.stringify(response.data));
+  }
+  return response.data;
 };
 
 const logout = () => {
@@ -45,10 +41,11 @@ const getCurrentUser = () => {
   }
 };
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default {
+const authService = {
   register,
   login,
   logout,
   getCurrentUser,
 };
+
+export default authService;

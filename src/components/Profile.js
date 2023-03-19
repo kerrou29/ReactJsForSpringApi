@@ -1,4 +1,3 @@
-
 import React from 'react';
 import AuthService from '../services/AuthService';
 
@@ -12,7 +11,7 @@ const Profile = ({ user }) => {
     <div className="profile">
       <h2>Profile</h2>
       <p>
-        Welcome, {user.username}! You are logged in with role: {user.roles[0]}
+        Welcome, {user.firstName} {user.lastName}! You are logged in with role: User
       </p>
 
       <button className="btn btn-primary" onClick={handleLogout}>

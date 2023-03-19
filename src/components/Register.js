@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/AuthService';
 
 const Register = () => {
-  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,7 @@ const Register = () => {
     setMessage("");
     setLoading(true);
 
-    AuthService.register(username, email, password).then(
+    AuthService.register(firstName, lastName, email, password).then(
       (response) => {
         setMessage("Registration successful");
         setLoading(false);
@@ -42,14 +43,25 @@ const Register = () => {
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
         <div className="form-group">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="firstName">First Name</label>
           <input
             type="text"
             className="form-control"
-            id="username"
+            id="firstName"
             required
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="lastName">Last Name</label>
+          <input
+            type="text"
+            className="form-control"
+            id="lastName"
+            required
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
           />
         </div>
 

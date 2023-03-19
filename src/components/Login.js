@@ -1,89 +1,91 @@
+import React, { Component } from 'react';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import AppNavbar from './AppNavbar';
+import { withRouter } from './withRouter';
 
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      error: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AuthService from '../services/AuthService';
+  handleChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
 
-const Login = ({ setUser }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+    this.setState({
+      [name]: value
+    });
+  }
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  async handleSubmit(event) {
+    event.preventDefault();
+    const { email, password } = this.state;
 
-    setMessage("");
-    setLoading(true);
+    try {
+      const response = await fetch('/api/auth/authenticate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      });
 
-    AuthService.login(username, password).then(
-      (response) => {
-        setUser(response);
-        navigate("/");
-      },
-      (error) => {
-        const errorMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        setMessage(errorMessage);
-        setLoading(false);
+      if (response.status === 200) {
+        this.props.history.push('/getPatients');
+      } else {
+        const error = await response.json();
+        this.setState({
+          error: error.message
+        });
       }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <Form onSubmit={this.handleSubmit}>
+          <FormGroup>
+            <Label for="email">Email</Label>
+            <Input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Enter your email"
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="password">Password</Label>
+            <Input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Enter your password"
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+          {this.state.error && <p>{this.state.error}</p>}
+          <Button type="submit">Login</Button>
+        </Form>
+      </div>
     );
-  };
+  }
+}
 
-  return (
-    <div className="login-form">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            className="form-control"
-            id="username"
-            required
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-
-    <div>
-        <input
-        type="password"
-        className="form-control"
-        id="password"
-        required
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-    </div>
-
-    {loading ? (
-      <div className="spinner-border" role="status">
-        <span className="sr-only">Loading...</span>
-      </div>
-    ) : (
-      <button type="submit" className="btn btn-primary">
-        Login
-      </button>
-    )}
-
-    {message && (
-      <div className="alert alert-danger mt-3" role="alert">
-        {message}
-      </div>
-    )}
-  </form>
-</div>
-
-);
-};
-
-export default Login;
-
-        
+export default withRouter(Login);

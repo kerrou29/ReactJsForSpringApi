@@ -9,16 +9,24 @@ class PatientList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {patients: []};
+        this.state = {patients: null, isLoading:true
+        };
         this.remove = this.remove.bind(this);
     }
 
 
-    componentDidMount() {
-        fetch('/api/patients/getPatients')
-            .then(response => response.json())
-            .then(data => this.setState({patients: data}));
+    // componentDidMount() {
+    //     fetch('/api/patients/getPatients')
+    //         .then(response => response.json())
+    //         .then(data => this.setState({patients: data}));
+    // }
+
+    async componentDidMount() {
+        const response = await fetch('/api/patients/getPatients');
+        const data = await response.json();
+        this.setState({patients: data, isLoading: false});
     }
+
     async remove(id) {
         await fetch(`/api/patients/deletePatient/${id}`, {
             method: 'DELETE',
@@ -39,6 +47,11 @@ class PatientList extends Component {
 
     
         const {patients, isLoading} = this.state;
+        const { user } = this.props;
+
+        if (!user) {
+          return <p>Please log in to view the patient list</p>;
+        }
     
         if (isLoading) {
             return <p>Loading...</p>;
