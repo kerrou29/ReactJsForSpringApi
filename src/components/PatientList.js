@@ -56,6 +56,10 @@ class PatientList extends Component {
         if (isLoading) {
             return <p>Loading...</p>;
         }
+
+        if (!patients || patients.length === 0) {
+            return <p>No patients found.</p>;
+          }
     
         const patientList = patients.map(patient => {
             return <tr key={patient.id}>
