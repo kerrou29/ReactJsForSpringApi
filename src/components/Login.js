@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import AppNavbar from './AppNavbar';
 import { withRouter } from './withRouter';
+import authService from '../services/AuthService';
 
 class Login extends Component {
   constructor(props) {
@@ -26,33 +26,66 @@ class Login extends Component {
   }
 
   async handleSubmit(event) {
-    event.preventDefault();
-    const { email, password } = this.state;
-
-    try {
-      const response = await fetch('/api/auth/authenticate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        })
-      });
-
-      if (response.status === 200) {
-        this.props.history.push('/getPatients');
-      } else {
-        const error = await response.json();
+      event.preventDefault();
+      const { email, password } = this.state;
+    
+      try {
+        const user = await authService.login(email, password);
+        if (user) {
+          // redirect to the desired page after login
+          window.location.href = '/getPatients';
+        } else {
+          this.setState({
+            error: 'Invalid email or password'
+          });
+        }
+      } catch (error) {
+        console.log(error);
         this.setState({
-          error: error.message
+          error: 'An error occurred while logging in'
         });
       }
-    } catch (error) {
-      console.log(error);
     }
-  }
+    
+    // event.preventDefault();
+    // const { email, password } = this.state;
+
+
+    // try {
+    //   const response = await fetch('/api/auth/authenticate', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       email: email,
+    //       password: password
+    //     })
+    //   });
+      
+
+    //   if (response.status === 200) {
+    //     const data = await response.json();
+      
+    //   // Set user object in local storage
+    //   localStorage.setItem('user', JSON.stringify(data.user));
+    //   console.log('User logged in:', response.data);
+
+
+        
+    //   } else {
+    //     const error = await response.json();
+    //     this.setState({
+    //       error: error.message
+    //     });
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  
+
+  //window.location.href = '/getPatients';
+
 
   render() {
     return (

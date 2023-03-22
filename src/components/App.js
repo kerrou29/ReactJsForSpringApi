@@ -28,6 +28,8 @@ class App extends Component {
     this.setState({
       user: user,
     });
+
+  
   }
 
   render() {
@@ -41,7 +43,7 @@ class App extends Component {
                 <Route path="/" element={<Home />} />
                 <Route
                   path="/getPatients"
-                  render={() => <PatientList user={this.state.user} />}
+                  element={ <PatientList user={this.state.user} />}
                 />
 
                 <Route
@@ -59,7 +61,7 @@ class App extends Component {
                 <Route
                   path="/login"
                   element={<Login setUser={this.setUser}
-                   history={this.props.history} />}
+                   />}
                 />
 
               </Routes>

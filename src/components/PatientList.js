@@ -9,8 +9,13 @@ class PatientList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {patients: null, isLoading:true
+        this.state = {
+            patients: null, 
+            isLoading:true,
+            user: props.user
+            
         };
+        
         this.remove = this.remove.bind(this);
     }
 
@@ -47,9 +52,9 @@ class PatientList extends Component {
 
     
         const {patients, isLoading} = this.state;
-        const { user } = this.props;
 
-        if (!user) {
+        if (!this.state.user) {
+            console.log("User is : ", this.state.user)
           return <p>Please log in to view the patient list</p>;
         }
     
