@@ -22,15 +22,18 @@ const login = async (email, password) => {
     });
 
     console.log("response.data: ", JSON.stringify(response.data));
-  if (response.data.token) {
 
+  if (response.data.token) {
    localStorage.setItem("user", JSON.stringify(response.data));
 
   }
-  console.log('User logged in:', response.data.token);
+  console.log('User logged in:', response.data);
   
   console.log('getting user from localStorage', localStorage.getItem("user"));
+
   return response.data;
+
+  
 };
 
 const logout = () => {
@@ -39,19 +42,23 @@ const logout = () => {
 
 
 const getCurrentUser = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  console.log("User:", user.token);
+  const userJson = localStorage.getItem("user");
+  if (userJson !== null) {
+    const user = JSON.parse(userJson);
+    console.log("User:", user.token);
 
-  if (user && user.token) {
-    const decodedToken = jwtDecode(user.token);
-    if (decodedToken.exp * 1000 < Date.now()) {
-      localStorage.removeItem("user");
-    } else {
-      return user;
+    if (user && user.token) {
+      const decodedToken = jwtDecode(user.token);
+      if (decodedToken.exp * 1000 < Date.now()) {
+        localStorage.removeItem("user");
+      } else {
+        return user;
+      }
     }
   }
   return null;
 };
+
 
 const authService = {
   register,

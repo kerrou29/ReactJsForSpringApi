@@ -32,7 +32,6 @@ class Login extends Component {
       try {
         const user = await authService.login(email, password);
         if (user) {
-          // redirect to the desired page after login
           window.location.href = '/getPatients';
         } else {
           this.setState({

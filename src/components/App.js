@@ -8,7 +8,6 @@ import Login from "./Login";
 import AuthService from "../services/AuthService";
 import PatientList from "./PatientList";
 import PatientEdit from "./PatientEdit";
-import ErrorBoundary from "../services/ErrorBoundary";
 
 class RegisterPage extends Component {
   render() {
@@ -29,17 +28,30 @@ class App extends Component {
     this.setState({
       user: user,
     });
-
+    console.log("User set:", user);
   
   }
 
+  componentDidMount() {
+    console.log("Component mounted");
+    const user = AuthService.getCurrentUser();
+    console.log("User from local storage:", user);
+    if (user) {
+      this.setState({
+        user: user,
+      });
+    }
+  }
+
   render() {
+    console.log("User in state:", this.state.user);
+
     return (
-      <BrowserRouter>
         <div className="App">
           <Navbar user={this.state.user} setUser={this.setUser} />
           <div className="container mt-3">
             <Fragment>
+              <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route
@@ -67,20 +79,14 @@ class App extends Component {
                    />}
                 />
               </Routes>
+              </BrowserRouter>
             </Fragment>
           </div>
         </div>
-      </BrowserRouter>
     );
   }
 }
 
-export default function AppWithBoundary() {
-  return (
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
-  );
-}
+export default App;
 
 

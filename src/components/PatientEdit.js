@@ -3,6 +3,7 @@ import { Link} from 'react-router-dom';
 import { withRouter } from './withRouter';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 import AppNavbar from './AppNavbar';
+import authService from '../services/AuthService';
 
 class PatientEdit extends Component {
 
@@ -45,7 +46,8 @@ class PatientEdit extends Component {
             method: (item.id) ? 'PUT' : 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + authService.getCurrentUser().token
             },
             body: JSON.stringify(item),
         });
