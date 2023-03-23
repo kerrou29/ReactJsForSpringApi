@@ -20,12 +20,16 @@ const login = async (email, password) => {
       email,
       password,
     });
-  if (response.data.accessToken) {
-    localStorage.setItem("user", response.data);
+
+    console.log("response.data: ", JSON.stringify(response.data));
+  if (response.data.token) {
+
+   localStorage.setItem("user", JSON.stringify(response.data));
 
   }
-  console.log('User logged in:', response.data);
-
+  console.log('User logged in:', response.data.token);
+  
+  console.log('getting user from localStorage', localStorage.getItem("user"));
   return response.data;
 };
 
@@ -33,16 +37,17 @@ const logout = () => {
   localStorage.removeItem("user");
 };
 
+
 const getCurrentUser = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log("User:", user);
+  console.log("User:", user.token);
 
-  if (user && user.accessToken) {
-    const decodedToken = jwtDecode(user.accessToken);
+  if (user && user.token) {
+    const decodedToken = jwtDecode(user.token);
     if (decodedToken.exp * 1000 < Date.now()) {
       localStorage.removeItem("user");
     } else {
-      return JSON.parse(user);
+      return user;
     }
   }
   return null;

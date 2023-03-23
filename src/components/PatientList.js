@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, ButtonGroup, Container, Table } from 'reactstrap';
 import AppNavbar from './AppNavbar';
 import { Link } from 'react-router-dom';
+import authService from '../services/AuthService';
 
 
 
@@ -27,7 +28,15 @@ class PatientList extends Component {
     // }
 
     async componentDidMount() {
-        const response = await fetch('/api/patients/getPatients');
+        console.log("Current User: ", authService.getCurrentUser());
+        const response = await fetch('/api/patients/getPatients', {
+            method: "GET",
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + authService.getCurrentUser().token
+            }
+        });
         const data = await response.json();
         this.setState({patients: data, isLoading: false});
     }

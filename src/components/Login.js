@@ -47,44 +47,7 @@ class Login extends Component {
       }
     }
     
-    // event.preventDefault();
-    // const { email, password } = this.state;
-
-
-    // try {
-    //   const response = await fetch('/api/auth/authenticate', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       email: email,
-    //       password: password
-    //     })
-    //   });
-      
-
-    //   if (response.status === 200) {
-    //     const data = await response.json();
-      
-    //   // Set user object in local storage
-    //   localStorage.setItem('user', JSON.stringify(data.user));
-    //   console.log('User logged in:', response.data);
-
-
-        
-    //   } else {
-    //     const error = await response.json();
-    //     this.setState({
-    //       error: error.message
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  
-
-  //window.location.href = '/getPatients';
+    
 
 
   render() {

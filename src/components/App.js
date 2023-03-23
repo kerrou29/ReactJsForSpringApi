@@ -8,6 +8,7 @@ import Login from "./Login";
 import AuthService from "../services/AuthService";
 import PatientList from "./PatientList";
 import PatientEdit from "./PatientEdit";
+import ErrorBoundary from "../services/ErrorBoundary";
 
 class RegisterPage extends Component {
   render() {
@@ -58,12 +59,13 @@ class App extends Component {
                   path="/register"
                   element={<RegisterPage setUser={this.setUser} />}
                 />
-                <Route
+
+                
+                <Route  
                   path="/login"
                   element={<Login setUser={this.setUser}
                    />}
                 />
-
               </Routes>
             </Fragment>
           </div>
@@ -73,6 +75,12 @@ class App extends Component {
   }
 }
 
-export default App;
+export default function AppWithBoundary() {
+  return (
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  );
+}
 
 
