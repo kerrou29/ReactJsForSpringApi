@@ -60,7 +60,7 @@ class App extends Component {
                 />
 
                 <Route
-                  path="/api/patients/updatePatient/:id"
+                  path="/patients/:id"
                   element={<PatientEdit />}
                 />
                 <Route

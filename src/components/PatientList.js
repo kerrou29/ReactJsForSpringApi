@@ -21,11 +21,7 @@ class PatientList extends Component {
     }
 
 
-    // componentDidMount() {
-    //     fetch('/api/patients/getPatients')
-    //         .then(response => response.json())
-    //         .then(data => this.setState({patients: data}));
-    // }
+    
 
     async componentDidMount() {
         console.log("Current User: ", authService.getCurrentUser());
@@ -46,7 +42,9 @@ class PatientList extends Component {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + authService.getCurrentUser().token
+
             }
         }).then(() => {
             let updatedPatients = [...this.state.patients].filter(i => i.id !== id);
@@ -92,7 +90,7 @@ class PatientList extends Component {
     
         return (
             <div>
-                <AppNavbar/>
+                
                 <Container fluid>
                     <div className="float-right">
                         <Button color="success" tag={Link} to={"/patients/new"} >Add Patient</Button>
