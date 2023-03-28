@@ -61,7 +61,6 @@ class PatientList extends Component {
         const {patients, isLoading} = this.state;
 
         if (!this.state.user) {
-            console.log("User is : ", this.state.user)
           return <p>Please log in to view the patient list</p>;
         }
     

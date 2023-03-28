@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import { BrowserRouter as Router, Routes, Route, BrowserRouter } from "react-router-dom";
+import React, { Component } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./AppNavbar";
 import Home from "./Home";
 import Profile from "./Profile";
@@ -29,7 +29,6 @@ class App extends Component {
       user: user,
     });
     console.log("User set:", user);
-  
   }
 
   componentDidMount() {
@@ -47,46 +46,36 @@ class App extends Component {
     console.log("User in state:", this.state.user);
 
     return (
-        <div className="App">
+      <div className="App">
+        <Router>
           <Navbar user={this.state.user} setUser={this.setUser} />
           <div className="container mt-3">
-            <Fragment>
-              <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route
-                  path="/getPatients"
-                  element={ <PatientList user={this.state.user} />}
-                />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route
+                path="/getPatients"
+                element={<PatientList user={this.state.user} />}
+              />
+              <Route path="/patients/:id" element={<PatientEdit user = {this.state.user} />} />
 
-                <Route
-                  path="/patients/:id"
-                  element={<PatientEdit />}
-                />
-                <Route
-                  path="/profile"
-                  element={<Profile user={this.setUser} />}
-                />
-                <Route
-                  path="/register"
-                  element={<RegisterPage setUser={this.setUser} />}
-                />
-
-                
-                <Route  
-                  path="/login"
-                  element={<Login setUser={this.setUser}
-                   />}
-                />
-              </Routes>
-              </BrowserRouter>
-            </Fragment>
+              <Route
+                path="/profile"
+                element={<Profile user={this.setUser} />}
+              />
+              <Route
+                path="/register"
+                element={<RegisterPage setUser={this.setUser} />}
+              />
+              <Route
+                path="/login"
+                element={<Login setUser={this.setUser} />}
+              />
+            </Routes>
           </div>
-        </div>
+        </Router>
+      </div>
     );
   }
 }
 
 export default App;
-
-

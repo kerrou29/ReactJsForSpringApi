@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/AuthService';
@@ -36,6 +35,35 @@ const Register = () => {
         setLoading(false);
       }
     );
+  };
+
+  const validateInputs = () => {
+    if (!firstName || !lastName || !email || !password) {
+      setMessage("Please fill in all fields");
+      return false;
+    }
+
+    if (!/^[a-zA-Z ]+$/.test(firstName)) {
+      setMessage("Invalid first name. Only letters and spaces are allowed.");
+      return false;
+    }
+
+    if (!/^[a-zA-Z ]+$/.test(lastName)) {
+      setMessage("Invalid last name. Only letters and spaces are allowed.");
+      return false;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setMessage("Invalid email address");
+      return false;
+    }
+
+    if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password)) {
+      setMessage("Password must contain at least 8 characters, including letters, numbers, and special characters");
+      return false;
+    }
+
+    return true;
   };
 
   return (
@@ -89,29 +117,22 @@ const Register = () => {
           />
         </div>
 
-        <button
-          type="submit"
-          className="btn btn" />
-
         {loading ? (
           <div className="spinner-border" role="status">
             <span className="sr-only">Loading...</span>
           </div>
         ) : (
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary" onClick={validateInputs}>
             Register
           </button>
         )}
-
-        {message && (
+         
+         {message && (
           <div className="alert alert-danger mt-3" role="alert">
             {message}
           </div>
         )}
-
-          
-          
-        </form>
+      </form>
     </div>
   )
 }
